@@ -1,0 +1,2 @@
+feed_publisher_name,feed_publisher_url,feed_lang,feed_start_date,feed_end_date,feed_version
+Capital Area Transportation Authority,http://www.cata.org,en,20180827,20181216,18-07 (Aug27-Dec16)_20181005

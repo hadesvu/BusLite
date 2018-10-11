@@ -2,22 +2,20 @@ package com.buslite;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.content.Intent;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
@@ -41,6 +39,8 @@ import java.util.List;
 import Modules.DirectionFinder;
 import Modules.DirectionFinderListener;
 import Modules.Route;
+import Modules.Stop;
+import Modules.Vehicle;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, DirectionFinderListener {
     private GoogleMap mMap;
@@ -104,7 +104,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onPlaceSelected(Place place) {
 
                 Log.i("TesTTTTTTTTTTTTTTTTT", "Place: " + place.getName());
-                origin = place.getName().toString();
+                origin = place.getLatLng().latitude + "," + place.getLatLng().longitude;
             }
 
             @Override
@@ -121,7 +121,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onPlaceSelected(Place place) {
 
                 Log.i("TesTTTTTTTTTTTTTTTTT", "Place: " + place.getName());
-                destination = place.getName().toString();
+                destination = place.getLatLng().latitude + "," + place.getLatLng().longitude;
             }
 
             @Override
@@ -166,7 +166,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         try {
-            new DirectionFinder(this, origin, destination).execute();
+            new DirectionFinder(getApplicationContext(), this, origin, destination).execute();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -221,7 +221,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
-    public void onDirectionFinderSuccess(List<Route> routes) {
+    public void onDirectionFinderSuccess(List<Route> routes, List<Stop> stops) {
         progressDialog.dismiss();
         polylinePaths = new ArrayList<>();
         originMarkers = new ArrayList<>();
@@ -260,5 +260,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-
+    @Override
+    public void onShowVehicleSuccess(List<Vehicle> vehicles) {
+        for (Vehicle vehicle : vehicles) {
+            destinationMarkers.add(mMap.addMarker(new MarkerOptions()
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.bus))
+                    .position(vehicle.location)
+            ));
+        }
+    }
 }

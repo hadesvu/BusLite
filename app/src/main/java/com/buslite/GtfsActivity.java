@@ -5,10 +5,10 @@ import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -48,6 +48,13 @@ public class GtfsActivity extends FragmentActivity implements OnMapReadyCallback
     private ProgressDialog progressDialog;
     final Handler handler = new Handler();
 
+    private static final String DIRECTION_URL_API = "http://developers.cata.org/gtfsdownload.ashx?key=";
+    private static final String API_KEY = "97d1ac8b-e6c5-4f06-8dbf-4bd9e1361302";
+    private static final String MODE = "tripupdate";
+
+    //private String URL = DIRECTION_URL_API+API_KEY +"&data="+ MODE;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +71,7 @@ public class GtfsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         },0);
     }
+
 
     private void draw_stop() throws UnsupportedEncodingException {
         List<Stop> stops = new ArrayList<>();

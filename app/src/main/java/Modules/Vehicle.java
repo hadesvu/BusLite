@@ -7,4 +7,5 @@ import java.util.List;
 public class Vehicle {
     public LatLng location;
     public List<LatLng> points;
+    public int tripID;
 }
